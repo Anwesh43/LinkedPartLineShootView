@@ -33,7 +33,7 @@ fun Float.updateToD(sc : Float, d : Float) : Float = this + (d - this) * sc
 fun Canvas.drawPLSNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val gap : Float = w / (nodes + 1)
+    val gap : Float = h / (nodes + 1)
     val size : Float = gap / sizeFactor
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
@@ -42,12 +42,12 @@ fun Canvas.drawPLSNode(i : Int, scale : Float, paint : Paint) {
     paint.strokeCap = Cap.ROUND
     paint.color = foreColor
     save()
-    translate(gap * (i + 1), h/2)
+    translate(w/2, gap * (i + 1))
     for (j in 0..1) {
         save()
         rotate(180f * j * sc1)
         for (k in 0..(lines - 1)) {
-            val sk : Float = sc2.divideScale(k, lines)
+            val sk : Float = sc2.divideScale(lines-1 - k, lines)
             val sx : Float = xGap * k
             save()
             translate(sx.updateToD(sk, (w/2 + paint.strokeWidth/2)), 0f)
@@ -219,7 +219,7 @@ class PartLineShootView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : PartLineShootView {
             val view : PartLineShootView = PartLineShootView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
