@@ -213,4 +213,13 @@ class PartLineShootView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : PartLineShootView {
+            val view : PartLineShootView = PartLineShootView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
