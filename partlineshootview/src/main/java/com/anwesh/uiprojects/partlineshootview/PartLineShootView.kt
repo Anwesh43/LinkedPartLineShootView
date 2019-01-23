@@ -21,6 +21,7 @@ val strokeFactor : Int = 90
 val sizeFactor : Float = 2.7f
 val foreColor : Int = Color.parseColor("#673AB7")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val delay : Long = 25
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -45,7 +46,7 @@ fun Canvas.drawPLSNode(i : Int, scale : Float, paint : Paint) {
     translate(w/2, gap * (i + 1))
     for (j in 0..1) {
         save()
-        rotate(180f * j * sc1)
+        rotate(-180f * j * sc1)
         for (k in 0..(lines - 1)) {
             val sk : Float = sc2.divideScale(lines-1 - k, lines)
             val sx : Float = xGap * k
@@ -80,7 +81,7 @@ class PartLineShootView(ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            scale += scale.updateValue(dir, lines, 1)
+            scale += scale.updateValue(dir,1, lines)
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
@@ -103,7 +104,7 @@ class PartLineShootView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(25)
                     view.invalidate()
                 } catch(ex : Exception) {
 
