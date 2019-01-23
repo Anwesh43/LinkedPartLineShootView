@@ -190,4 +190,26 @@ class PartLineShootView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : PartLineShootView) {
+
+        private val animator : Animator = Animator(view)
+        private val pls : PartLineShooter = PartLineShooter(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            pls.draw(canvas, paint)
+            animator.animate {
+                pls.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            pls.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
